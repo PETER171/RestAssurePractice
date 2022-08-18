@@ -8,6 +8,8 @@ import io.restassured.response.Response;
 import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
+import org.json.simple.JSONObject;
+
 public class TestExamples {
 	
 	@Test
@@ -35,4 +37,51 @@ public class TestExamples {
 			.log().all();
 		
 	}
+	
+	@Test
+	public void Test_Get() {
+		given().get("https://reqres.in/api/users?page=2").
+		then().
+		statusCode(200).
+		body("data.id[1]",equalTo(8)).
+		log().all();
+	}
+	
+	@Test
+	public void Test_put() {
+		JSONObject request = new JSONObject();
+		request.put("name", "chaya");
+		System.out.println(request);
+		given().
+		body(request.toJSONString()).
+		when().
+		put("https://reqres.in/api/users?page=2").
+		then().statusCode(200).
+		log().all();
+	}
+	
+	@Test
+	public void Test_post() {
+		JSONObject request = new JSONObject();
+		request.put("name", "chaya");
+		System.out.println(request);
+		given().
+		body(request.toJSONString()).
+		when().
+		post("https://reqres.in/api/users?page=2").
+		then().statusCode(201).
+		log().all();
+	}
+	
+	@Test
+	public void Test_delete() {
+		JSONObject request = new JSONObject();
+		given().
+		body(request.toJSONString()).
+		when().
+		delete("https://reqres.in/api/users?page=2").
+		then().statusCode(204).
+		log().all();
+	}
+	
 }
